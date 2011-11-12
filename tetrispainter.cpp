@@ -91,6 +91,7 @@ int TetrisPainter::paintRight(int startx, QPainter &p) {
         g.drawString("Game over", startx + 10, 180);
     }
     */
+    return 0; //we not use this result
 }
 
 void TetrisPainter::paintPreview(int x, int y, QPainter& p, Block& pblck) {
