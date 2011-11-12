@@ -141,8 +141,8 @@ void Tetris::rotate(bool clockwise) {
         return;
     int rh = rot.sph,
         rw = rot.spw;
-    for(int i = 0; i < rot.sph; i++)
-        for(int j = 0; j < rot.spw; j++) {
+    for(int i = 0; i < rh; i++)
+        for(int j = 0; j < rw; j++) {
             if (rot.spinned(i, j) &&
                     x - rh + i >= 0 &&
                     ct.t(x - rh + i, ny + j))
