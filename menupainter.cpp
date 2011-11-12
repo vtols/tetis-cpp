@@ -61,7 +61,7 @@ void MenuPainter::openSelected() {
         if (menabled[i])
             rc++;
     if (mentries[i - 1] == "New game") {
-        setStated(true);
+        setStarted(true);
         owner->restartTetris();
     }
     else if (mentries[i - 1] == "Resume")
@@ -71,7 +71,7 @@ void MenuPainter::openSelected() {
     repaint();
 }
 
-void MenuPainter::setStated(bool state) {
+void MenuPainter::setStarted(bool state) {
     for (int i = 0; i < mentries.size(); i++)
         if (mentries[i] == "Resume") {
             enc += (int) state - menabled[i];

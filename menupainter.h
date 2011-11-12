@@ -27,7 +27,7 @@ public:
     void key(QKeyEvent *);
 
     void openSelected();
-    void setStated(bool state);
+    void setStarted(bool state);
 
 signals:
 
