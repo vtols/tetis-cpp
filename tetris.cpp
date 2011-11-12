@@ -45,12 +45,19 @@ void Tetris::gen() {
 }
 
 bool Tetris::checkmove() {
-    for (int i = 0; i < cur.sph; i++)
-        for (int j = 0; j < cur.spw; j++) {
-            if (cur.spinned(i, j) && ct.t(x + i, y + j) && drawcur)
+    int ch = cur.sph,
+        cw = cur.spw;
+    for (int i = 0; i < ch; i++)
+        for (int j = 0; j < cw; j++) {
+            if (cur.spinned(i, j) &&
+                    x - ch + i >= 0 &&
+                    ct.t(x - ch + i, y + j) &&
+                    drawcur)
                 end = true;
-            if (x + i + 1 == h ||
-                (cur.spinned(i, j) && ct.t(x + i + 1, y + j)))
+            if (x - ch + i + 1 == h ||
+                (cur.spinned(i, j) &&
+                 x - ch + i >= 0 &&
+                 ct.t(x - ch + i + 1, y + j)))
                 return false;
         }
     return true;
@@ -67,12 +74,15 @@ bool Tetris::move() {
         continuemv = false;
         if (drawcur) {
             //ptc.figureStopped();
-            for (int i = 0; i < cur.sph; i++)
-                for (int j = 0; j < cur.spw; j++)
-                    if (cur.spinned(i, j)) {
-                        ct.t(x + i, y + j) = true;
-                        ct.code(x + i, y + j) = 1;
-                        ct.c(x + i, y + j) = cur.color;
+            int ch = cur.sph,
+                cw = cur.spw;
+            for (int i = 0; i < ch; i++)
+                for (int j = 0; j < cw; j++)
+                    if (x - ch + i >= 0 &&
+                            cur.spinned(i, j)) {
+                        ct.t(x - ch + i, y + j) = true;
+                        ct.code(x - ch + i, y + j) = 1;
+                        ct.c(x - ch + i, y + j) = cur.color;
                     }
         }
         if (!checkLine())
@@ -85,10 +95,14 @@ bool Tetris::move() {
 void Tetris::moveLeft() {
     if (end)
         return;
-    for (int i = 0; i < cur.sph; i++)
-        for (int j = 0; j < cur.spw; j++) {
+    int ch = cur.sph,
+        cw = cur.spw;
+    for (int i = 0; i < ch; i++)
+        for (int j = 0; j < cw; j++) {
             if (y + j - 1 < 0 ||
-                (cur.spinned(i, j) && ct.t(x + i, y + j - 1)))
+                (cur.spinned(i, j) &&
+                    x - ch + i >= 0 &&
+                    ct.t(x - ch + i, y + j - 1)))
                 return;
         }
     y--;
@@ -98,10 +112,14 @@ void Tetris::moveLeft() {
 void Tetris::moveRight() {
     if (end)
         return;
-    for (int i = 0; i < cur.sph; i++)
-        for (int j = 0; j < cur.spw; j++) {
+    int ch = cur.sph,
+        cw = cur.spw;
+    for (int i = 0; i < ch; i++)
+        for (int j = 0; j < cw; j++) {
             if (y + j + 1 < 0 || y + j + 1 >= w ||
-                (cur.spinned(i, j) && ct.t(x + i, y + j + 1)))
+                (cur.spinned(i, j) &&
+                    x - ch + i >= 0 &&
+                    ct.t(x - ch + i, y + j + 1)))
                 return;
         }
     y++;
@@ -121,9 +139,13 @@ void Tetris::rotate(bool clockwise) {
         ny--;
     if(rot.sph + x > h)
         return;
+    int rh = rot.sph,
+        rw = rot.spw;
     for(int i = 0; i < rot.sph; i++)
         for(int j = 0; j < rot.spw; j++) {
-            if (rot.spinned(i, j) && ct.t(x + i, ny + j))
+            if (rot.spinned(i, j) &&
+                    x - rh + i >= 0 &&
+                    ct.t(x - rh + i, ny + j))
                 return;
         }
     y = ny;
@@ -147,11 +169,15 @@ Block Tetris::getNext() {
 }
 
 bool Tetris::canGen() {
-    int nx = 0;
-    int ny = w / 2 - next.w / 2;
-    for(int i = 0; i < next.h; i++)
-        for(int j = 0; j < next.w; j++) {
-            if(next.block(i, j) && ct.t(nx + i, ny + j)) {
+    int nx = 0,
+        ny = w / 2 - next.w / 2,
+        nh = next.sph,
+        nw = next.spw;
+    for(int i = 0; i < nh; i++)
+        for(int j = 0; j < nw; j++) {
+            if(next.block(i, j) &&
+                    nx - nh + i >= 0 &&
+                    ct.t(nx - nh + i, ny + j)) {
                 end = true;
                 return false;
             }
@@ -178,13 +204,17 @@ ColorTable Tetris::table() {
             pt.c(i, j) = ct.c(i, j);
             pt.code(i, j) = ct.code(i, j);
         }
+    int ch = cur.sph,
+        cw = cur.spw;
     if (!end && !cur.isEmpty() && drawcur) {
-        for (int i = 0; i < cur.sph; i++)
-            for (int j = 0; j < cur.spw; j++)
+        for (int i = 0; i < ch; i++)
+            for (int j = 0; j < cw; j++)
                 if (cur.spinned(i, j)) {
-                    pt.t(x + i, y + j) = true;
-                    pt.code(x + i, y + j) = 1;
-                    pt.c(x + i, y + j) = cur.color;
+                    if (x - ch + i >= 0) {
+                        pt.t(x - ch + i, y + j) = true;
+                        pt.code(x - ch + i, y + j) = 1;
+                        pt.c(x - ch + i, y + j) = cur.color;
+                    }
 
                     if(ghx - x >= cur.h) {
                         pt.code(ghx + i, ghy + j) = 2;
