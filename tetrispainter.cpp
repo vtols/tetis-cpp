@@ -13,7 +13,7 @@ TetrisPainter::TetrisPainter(TetrisPanel *ow) {
     t = NULL;
     owner = ow;
     started = false;
-    paused = true;
+    paused = false;
     timer = new QTimer();
     timer->connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 }
@@ -75,14 +75,12 @@ int TetrisPainter::paintRight(int startx, QPainter &p) {
     p.drawText(startx + 10, 30, "Next:");
     p.drawText(startx + 10, 120, "Score: 0");
     p.drawText(startx + 10, 150, "Lines: 0");
-    /*
-    if(paused) {
+    if (paused) {
         p.setBrush(QBrush(QColor(60, 60, 60, 200)));
         p.drawRect(0, 0, 800, 500);
         p.setPen(QPen(Qt::red));
         p.drawText(startx + 50, 90, "Paused");
     }
-    */
     /*
     if(t.gameover()) {
         //stopRepeater = true;
@@ -124,6 +122,7 @@ void TetrisPainter::stopTetris() {
     delete t;
     t = NULL;
     if(started) {
+        paused = false;
         started = false;
         timer->stop();
     }
