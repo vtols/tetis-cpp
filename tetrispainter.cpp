@@ -81,16 +81,14 @@ int TetrisPainter::paintRight(int startx, QPainter &p) {
         p.setPen(QPen(Qt::red));
         p.drawText(startx + 50, 90, "Paused");
     }
-    /*
-    if(t.gameover()) {
-        //stopRepeater = true;
-        tim.cancel();
+    if(t->gameover()) {
+        timer->stop();
+        paused = false;
         started = false;
-        owner.menu.setStarted(false);
-        g.setColor(Color.RED);
-        g.drawString("Game over", startx + 10, 180);
+        owner->setStarted(false);
+        p.setPen(Qt::red);
+        p.drawText(startx + 10, 180, "Game over");
     }
-    */
     return 0; //we not use this result
 }
 
@@ -114,6 +112,7 @@ void TetrisPainter::paintPreview(int x, int y, QPainter& p, Block& pblck) {
 void TetrisPainter::start() {
     if (t == NULL)
         t = new Tetris(th, tw);
+    started = true;
     t->move();
     repaint();
     timer->start(1000);
@@ -122,7 +121,7 @@ void TetrisPainter::start() {
 void TetrisPainter::stopTetris() {
     delete t;
     t = NULL;
-    if(started) {
+    if (started) {
         paused = false;
         started = false;
         timer->stop();
@@ -130,8 +129,9 @@ void TetrisPainter::stopTetris() {
 }
 
 void TetrisPainter::update() {
-    started = true;
-    if(!paused)
+    if (!started)
+        return;
+    if (!paused)
         moveTetris();
     repaint();
 }

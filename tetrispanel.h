@@ -40,6 +40,7 @@ public slots:
     void openMenu();
     void openTetris();
     void restartTetris();
+    void setStarted(bool);
 
 };
 

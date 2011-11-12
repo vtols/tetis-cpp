@@ -69,3 +69,7 @@ void TetrisPanel::restartTetris() {
     mtetris->paused = false;
     repaint();
 }
+
+void TetrisPanel::setStarted(bool started) {
+    main->setStarted(started);
+}

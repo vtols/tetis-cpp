@@ -1,5 +1,4 @@
 #include "tetris.h"
-#include <iostream>
 
 void Tetris::initVars() {
     qsize = 5;
