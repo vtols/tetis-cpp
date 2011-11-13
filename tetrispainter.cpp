@@ -84,7 +84,6 @@ int TetrisPainter::paintRight(int startx, QPainter &p) {
     if(t->gameover()) {
         timer->stop();
         paused = false;
-        started = false;
         owner->setStarted(false);
         p.setPen(Qt::red);
         p.drawText(startx + 10, 180, "Game over");
