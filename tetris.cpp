@@ -17,6 +17,7 @@ void Tetris::initVars() {
 Tetris::Tetris(QObject *parent) :
     QObject(parent) {
     initVars();
+    gen();
 }
 
 Tetris::Tetris(int x, int y) {
@@ -24,6 +25,7 @@ Tetris::Tetris(int x, int y) {
     ct = ColorTable(x, y);
     h = x;
     w = y;
+    gen();
 }
 
 void Tetris::gen() {

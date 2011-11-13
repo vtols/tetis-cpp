@@ -113,7 +113,6 @@ void TetrisPainter::start() {
     if (t == NULL)
         t = new Tetris(th, tw);
     started = true;
-    t->move();
     repaint();
     timer->start(1000);
 }
