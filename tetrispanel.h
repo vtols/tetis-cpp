@@ -18,7 +18,7 @@ class TetrisPanel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TetrisPanel(QWidget *parent = 0);
+    explicit TetrisPanel(QApplication& app, QWidget *parent = 0);
 
     ~TetrisPanel();
 
@@ -31,6 +31,7 @@ public:
 signals:
 
 public slots:
+    bool eventFilter(QObject *, QEvent *);
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

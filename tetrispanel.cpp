@@ -3,10 +3,11 @@
 #include "tetrispainter.h"
 #include "menupainter.h"
 
-TetrisPanel::TetrisPanel(QWidget *parent) :
+TetrisPanel::TetrisPanel(QApplication& app, QWidget *parent) :
     QWidget(parent) {
     //Tetris tet;
     //tet.swap();
+    app.installEventFilter(this);
     QApplication::setKeyboardInputInterval(0);
     main = new MenuPainter(this);
     mtetris = new TetrisPainter(this);
@@ -23,6 +24,14 @@ TetrisPanel::~TetrisPanel() {
 
 QSize TetrisPanel::sizeHint() const {
     return QSize(800, 500);
+}
+
+bool TetrisPanel::eventFilter(QObject *, QEvent *ev) {
+    if (ev->type() == QEvent::ActivationChange &&
+            current == mtetris &&
+            !mtetris->paused)
+        mtetris->paused = !mtetris->paused;
+    return false;
 }
 
 void TetrisPanel::paintEvent(QPaintEvent *) {
