@@ -212,16 +212,18 @@ ColorTable Tetris::table() {
         for (int i = 0; i < ch; i++)
             for (int j = 0; j < cw; j++)
                 if (cur.spinned(i, j)) {
+
+                    if(ghx - x >= cur.h) {
+                        pt.code(ghx - ch + i, ghy + j) = 2;
+                        pt.c(ghx - ch + i, ghy + j) = cur.color;
+                    }
+
                     if (x - ch + i >= 0) {
                         pt.t(x - ch + i, y + j) = true;
                         pt.code(x - ch + i, y + j) = 1;
                         pt.c(x - ch + i, y + j) = cur.color;
                     }
 
-                    if(ghx - x >= cur.h) {
-                        pt.code(ghx + i, ghy + j) = 2;
-                        pt.c(ghx + i, ghy + j) = cur.color;
-                    }
                 }
     }
     return pt;
@@ -275,8 +277,8 @@ void Tetris::calcghost() {
         int d = 0, inc = 0;
         for (int j = 0; j < cur.sph; j++)
             if (cur.spinned(j, i))
-                d = j + x + 1;
-        while (d < h && !ct.t(d, y + i)) {
+                d = j + x - cur.sph + 1;
+        while (d < h && (d < 0 || !ct.t(d, y + i))) {
             inc++;
             d++;
         }
