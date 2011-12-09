@@ -213,7 +213,7 @@ ColorTable Tetris::table() {
             for (int j = 0; j < cw; j++)
                 if (cur.spinned(i, j)) {
 
-                    if(ghx - x >= cur.h) {
+                    if(ghx - x >= cur.sph && ghx - ch + i < h ) {
                         pt.code(ghx - ch + i, ghy + j) = 2;
                         pt.c(ghx - ch + i, ghy + j) = cur.color;
                     }
