@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    TetrisPanel tpan;
+    TetrisPanel tpan(app);
     tpan.show();
     return app.exec();
 }
